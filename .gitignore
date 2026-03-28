@@ -1,0 +1,6 @@
+# Environments & secrets
+.env
+api_key.txt
+
+# Virtual environment
+venv/
