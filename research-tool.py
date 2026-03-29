@@ -169,8 +169,9 @@ class DatabaseManager:
 # -----------------------------------------------------------------------------------------------------
 class Assistant:
 
-    def __init__(self, api_key_file, logging):
+    def __init__(self, logging):
         # Initialize attributes for the Assistant, including API key, system message, and response
+        load_dotenv()
         self.__key = os.getenv("OPENAI_API_KEY")
         self.__openai_connection = openai.OpenAI(api_key=self.__key)
         self.logging = logging
@@ -214,7 +215,7 @@ class Assistant:
         # Send query to GPT model to get a response
         self.logging.log(f"Query: {query_content}")
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo-1106",
+            model="gpt-5.4-mini",
             messages=history,
             functions=functions,
             function_call=function_call,
@@ -258,7 +259,7 @@ class Assistant:
 
         # Send query to GPT model to get a response
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo-1106",
+            model="gpt-5.4-mini",
             messages=query,
             temperature=0.0)
         print("GPT SUMMARY RESPONSE:")
@@ -479,7 +480,7 @@ def generate_vba_code(input_string, openai_api_key):
     # Generate VBA code for each line
     for line in lines:
         prompt = f"Create a VBA code snippet to add a new slide in PowerPoint with the text: \"{line}\""
-        response = openai.completions.create(model="text-davinci-003", prompt=prompt, max_tokens=150)
+        response = openai.completions.create(model="5.4-mini", prompt=prompt, max_tokens=150)
         vba_code += response.choices[0].text.strip() + "\n"
 
     # Close the VBA subroutine
@@ -493,10 +494,9 @@ if __name__ == '__main__':
     assistant = Assistant(logging)
     mygui = MyGUI(assistant, logging)
 
-# Coded by: Sarah Krueck
 
 
 
-
+ 
 
 
