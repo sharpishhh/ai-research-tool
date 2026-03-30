@@ -1,5 +1,11 @@
 # AI Research Tool
 
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![OpenAI](https://img.shields.io/badge/OpenAI-gpt--5.4--mini-brightgreen)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=150&section=header&text=AI%20Research%20Tool&fontSize=40&animation=fadeIn)
+
 **An AI-powered desktop application that recursively explores a topic and its subtopics using the OpenAI API, stores results in a SQLite database, and displays a structured summary through a tkinter GUI.**
 
 ## Features
@@ -86,5 +92,5 @@ throughout the session.
 ## Credits
 
 Originally developed as a university final project. Refactored and modernized in 2026 
-to update deprecated API integrations, migrate to environment variable credential 
+to update outdated API integrations, migrate to environment variable credential 
 management, and improve code organization.
