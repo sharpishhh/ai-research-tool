@@ -264,6 +264,32 @@ class Assistant:
             temperature=0.0)
         print("GPT SUMMARY RESPONSE:")
         return response.choices[0].message.content
+    
+    def generate_vba_code(self, input_string):
+        # Split the input string into lines
+        lines = input_string.split(',')
+
+        # Initialize the VBA code for PowerPoint
+        vba_code = "Sub CreatePowerPointSlides()\n"
+        vba_code += "Dim ppApp As Object\n"
+        vba_code += "Dim ppPres As Object\n"
+        vba_code += "Dim ppSlide As Object\n"
+        vba_code += "Set ppApp = CreateObject(\"PowerPoint.Application\")\n"
+        vba_code += "Set ppPres = ppApp.Presentations.Add\n"
+
+        # Generate VBA code for each line
+        client = self.get_client()
+        for line in lines:
+            prompt = f"Create a VBA code snippet to add a new slide in PowerPoint with the text: \"{line}\""
+            response = client.chat.completions.create(
+                model="gpt-5.4-mini",
+                messages= [{"role": "user", "content": prompt}],
+                max_tokens=150)
+            vba_code += response.choices[0].message.content.strip() + "\n"
+        # Close the VBA subroutine
+        vba_code += "End Sub"
+        return vba_code
+
 
 
 # -----------------------------------------------------------------------------------
@@ -407,14 +433,11 @@ class MyGUI:
             subtopic_list = self.database.get_list_of_subtopics()
             delimiter = ','
             input_string = delimiter.join(subtopic_list)
-            openai_api_key = self.assistant.get_key()
             print()
             print("POWER POINT CODE:")
             print()
             self.logging.log(f"Printing VBA PowerPoint Code")
-            print(generate_vba_code(input_string, openai_api_key))
-
-
+            print(self.assistant.generate_vba_code(input_string))
 
     def display_summary_data(self, output_data):
         # Displays retrieved data on the GUI
@@ -461,33 +484,7 @@ class MyGUI:
             summary_content = self.assistant.send_summary_query(query_content)
             output_data.append((item[1], summary_content))
         return output_data
-
-def generate_vba_code(input_string, openai_api_key):
-    # Split the input string into lines
-    lines = input_string.split(',')
-
-    # Initialize the VBA code for PowerPoint
-    vba_code = "Sub CreatePowerPointSlides()\n"
-    vba_code += "Dim ppApp As Object\n"
-    vba_code += "Dim ppPres As Object\n"
-    vba_code += "Dim ppSlide As Object\n"
-    vba_code += "Set ppApp = CreateObject(\"PowerPoint.Application\")\n"
-    vba_code += "Set ppPres = ppApp.Presentations.Add\n"
-
-    # Set up OpenAI API
-    openai.api_key = openai_api_key
-
-    # Generate VBA code for each line
-    for line in lines:
-        prompt = f"Create a VBA code snippet to add a new slide in PowerPoint with the text: \"{line}\""
-        response = openai.completions.create(model="5.4-mini", prompt=prompt, max_tokens=150)
-        vba_code += response.choices[0].text.strip() + "\n"
-
-    # Close the VBA subroutine
-    vba_code += "End Sub"
-
-    return vba_code
-
+    
 
 if __name__ == '__main__':
     logging = Logging("program_log.log")
