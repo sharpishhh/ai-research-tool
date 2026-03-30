@@ -71,6 +71,19 @@ subject is fully covered.
 A standalone `Logging` class writes timestamped application events to a log file 
 throughout the session.
 
+## How It Works
+
+1. **Launch:** Run the application and the tkinter GUI opens with an entry box and response area
+2. **Input:** Enter a research topic and click "Send Request"
+3. **Exploration:** The app calls the OpenAI API using structured function calling to retrieve 
+   information and subtopics recursively until GPT determines the subject is fully covered
+4. **Storage:** Each topic and subtopic is stored in a SQLite database in a tree structure 
+   using parent topic IDs to preserve relationships
+5. **Summarization:** Once exploration is complete, the app queries GPT to summarize each 
+   main subtopic and its children
+6. **Output:** Summaries are displayed in the GUI, all events are written to a timestamped 
+   log file, and VBA code for PowerPoint slide generation is printed to the console
+   
 ## Known limitations / Future improvements
 
 ### Known Limitations
